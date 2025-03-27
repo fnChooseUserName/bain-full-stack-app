@@ -1,18 +1,21 @@
-# Use Node.js 20 image
+# Use Node.js base image
 FROM node:20
 
 # Set working directory
-WORKDIR /app
+WORKDIR /usr/src/app
+
+# Set database host name explicitly
+ENV PGHOST=database
 
 # Install dependencies
-COPY ./package.json ./package-lock.json ./
+COPY package*.json ./
 RUN npm install
 
-# Copy backend code
+# Copy the server source code
 COPY . .
 
 # Expose backend port
-EXPOSE 3000
+EXPOSE 4000
 
-# Start the backend server
-CMD ["node", "server.js"]
+# Run migrations on startup and then start the server
+CMD ["sh", "-c", "npx node-pg-migrate up && npm start"]
