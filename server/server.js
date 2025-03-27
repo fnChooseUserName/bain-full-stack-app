@@ -2,11 +2,13 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { body, validationResult } = require('express-validator');
 const axios = require('axios');
-const axiosRetry = require('axios-retry');
+const axiosRetry = require('axios-retry').default;
 const dotenv = require('dotenv');
 const cors = require('cors');
 const { Pool } = require('pg');
 const winston = require('winston');
+const DatabaseHelper = require('./utils/database-helper');
+const GeoHelper = require('./utils/geo-helper');
 
 dotenv.config();
 const app = express();
@@ -18,14 +20,6 @@ const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
   transports: [new winston.transports.Console()]
-});
-
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT || 5432,
 });
 
 // Axios retry/debounce setup
@@ -49,6 +43,7 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
+
 // Health/sanity check endpoint to ensure Client is still talking to Server
 app.get('/api-health', async (req, res) => {
   try {
@@ -61,9 +56,7 @@ app.get('/api-health', async (req, res) => {
 });
 
 // Primary distance calculator endpoint, incl. geocoding
-// TODO: - Create geocode() function which takes in an address and returns an OSM object
-//       - Create calculateHaversineDistance() function which takes in 2 OSM objects and returns a floating point number in km
-//       - Extract the coordinates from the OSM object to store in the database
+
 app.post('/distance', async (req, res) => {
 
   // Parse out addresses from req body
@@ -71,22 +64,30 @@ app.post('/distance', async (req, res) => {
 
   try {
     // Geocode addresses here
-    // const address1_geocode = geocode(address1);
-    // const address2_geocode = geocode(address2);
+    const address1_geocode = await GeoHelper.geocode(address1);
+    const address2_geocode = await GeoHelper.geocode(address2);
+
+      // Extract coordinates from OSM objects
+      const { lat: lat1, lon: lon1 } = address1_geocode;
+      const { lat: lat2, lon: lon2 } = address2_geocode;
 
     // Calculate distance between the 2 points
     // Using "Haversine formula" assuming straight line distance across a sphere
-    // const distance = calculateHaversineDistance(address1_geocode, address2_geocode);
+    const distance = GeoHelper.calculateHaversineDistance(lat1, lon1, lat2, lon2);
 
     // Store the query in the database for historical record
     // "distance_queries" table schema defined in migration file
-    await pool.query(
-      `INSERT INTO distance_queries (address1, address2, lat1, lon1, lat2, lon2, distance_km)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [address1, address2, 0, 0, 0, 0, 'distance']
+    await DatabaseHelper.insertQuery(
+      address1,
+      address2,
+      lat1,
+      lon1,
+      lat2,
+      lon2,
+      distance
     );
 
-    res.json({ distance_km: 'distance' });
+    res.json({ distance_km: distance });
 
   } catch(error) {
     logger.error(`Error processing request: ${error.message}`);
