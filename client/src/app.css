@@ -1,0 +1,49 @@
+/* ============================== 
+    Global Stylesheet [app.css]
+============================== */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  input, select, button {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .submit-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    background-color: #c0392b;
+  }
+
+  .disabled-btn {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .result {
+    font-weight: bold;
+    margin-top: 1rem;
+  }
