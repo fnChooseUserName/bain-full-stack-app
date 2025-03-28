@@ -80,46 +80,47 @@
       </button>
     </a>
   </div>
+  <div class="form-container">
+    <!-- Form -->
+    <div class="form">
+      <input 
+        type="text" 
+        placeholder="Source Address" 
+        bind:value={address1} 
+      />
 
-  <!-- Form -->
-  <div class="form">
-    <input 
-      type="text" 
-      placeholder="Source Address" 
-      bind:value={address1} 
-    />
+      <input 
+        type="text" 
+        placeholder="Destination Address" 
+        bind:value={address2} 
+      />
 
-    <input 
-      type="text" 
-      placeholder="Destination Address" 
-      bind:value={address2} 
-    />
+      <!-- Unit selection -->
+      <div class="radio-group-container" style="">
+        {#each distUnits as value}
+          <!-- NOTE: Order of binding matters here! bind:group before on:change before value
+                      in order to have reactive element that updates the DOM on:change
+                      bind:group first so that on:change reflects the value set by bind:group
+          -->
+          <label><input type="radio" bind:group={unit} on:change={updateDisplayedDistance} {value} > {value}</label>
+        {/each}
+      </div>
 
-    <!-- Unit selection -->
-     <div>
-      {#each distUnits as value}
-        <!-- NOTE: Order of binding matters here! bind:group before on:change before value
-                    in order to have reactive element that updates the DOM on:change
-                    bind:group first so that on:change reflects the value set by bind:group
-        -->
-        <label><input type="radio" bind:group={unit} on:change={updateDisplayedDistance} {value} > {value}</label>
-      {/each}
-     </div>
+      <!-- Submit Button -->
+      <button
+        class="submit-btn"
+        on:click={calculateDistance}
+        class:disabled-btn={!address1 || !address2}
+        disabled={!address1 || !address2}
+      >
+        <span>Calculate Distance</span>
+        <i class="fa-solid fa-calculator"></i> <!-- Calculator icon -->
+      </button>
+    </div>
 
-    <!-- Submit Button -->
-    <button
-      class="submit-btn"
-      on:click={calculateDistance}
-      class:disabled-btn={!address1 || !address2}
-      disabled={!address1 || !address2}
-    >
-      <span>Calculate Distance</span>
-      <i class="fa-solid fa-calculator"></i> <!-- Calculator icon -->
-    </button>
+    <!-- Distance Display -->
+    <div class="result">Distance: {distance || ''}</div>
   </div>
-
-  <!-- Distance Display -->
-  <div class="result">Distance: {distance || ''}</div>
 
   <!-- Toast Notification -->
   {#if showToast}
