@@ -2,7 +2,7 @@
   import { onMount, tick } from 'svelte';
   import { Toast } from '$lib';
   import { getDistance } from '$lib/api';
-  import { calculateMiles } from '$lib/utils';
+  import { calculateMiles, sanitizeInput } from '$lib/utils';
 
   let distUnits = [ 'Kilometers', 'Miles', 'Both'];
 
@@ -25,7 +25,9 @@
     }
 
     try {
-      const data = await getDistance(address1, address2);
+      let address1Safe = sanitizeInput(address1);
+      let address2Safe = sanitizeInput(address2);
+      const data = await getDistance(address1Safe, address2Safe);
 
       // Calculate and cache distance conversions on response
       // Radio-group options only handle display. 
