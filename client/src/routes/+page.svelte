@@ -74,9 +74,9 @@
     </div>
     
     <a href="/history" class="history-btn">
-      <button>
+      <button class="history-btn">
         <span>View Historical Queries</span>
-        <i class="fas fa-history"></i> <!-- History icon -->
+        <i class="fa-regular fa-clock"></i> <!-- History icon -->
       </button>
     </a>
   </div>
@@ -114,7 +114,7 @@
       disabled={!address1 || !address2}
     >
       <span>Calculate Distance</span>
-      <i class="fas fa-calculator"></i> <!-- Calculator icon -->
+      <i class="fa-solid fa-calculator"></i> <!-- Calculator icon -->
     </button>
   </div>
 

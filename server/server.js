@@ -95,5 +95,15 @@ app.post('/distance', async (req, res) => {
   }
 });
 
+// Historical Query retrieval endpoint
+app.get('/query-history', async (req, res) => {
+  try {
+    const history = await DatabaseHelper.getQueryHistory();
+    res.json(history);
+  } catch(error) {
+    res.status(500).json({ error: 'Failed to retrieve query history' });
+  }
+});
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
