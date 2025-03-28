@@ -41,6 +41,19 @@ class DatabaseHelper {
       throw error;
     }
   }
+
+
+  // Retrieval of historical records
+  async getQueryHistory() {
+    try {
+      const result = await this.pool.query('SELECT * FROM distance_queries ORDER BY id DESC;');
+      return result.rows;
+
+    } catch(error) {
+      console.error(`[Database] Error retrieving records: ${error}`)
+      throw error;
+    }
+  }
 }
 
 module.exports = new DatabaseHelper();

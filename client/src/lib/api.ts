@@ -42,4 +42,11 @@ export const request = async (
 export async function getDistance(address1: string, address2: string) {
     return await request('/distance', 'POST', { address1, address2 });
 }
-  
+
+
+/**
+ * Get a list of all of the previous distinct searches made.
+*/
+export async function getHistory() {
+    return await request('/query-history', 'GET');
+}

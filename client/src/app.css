@@ -2,48 +2,110 @@
     Global Stylesheet [app.css]
 ============================== */
 
+/* Globally import FontAwesome icons */
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+/* Globally import Roboto Flex font */
+@import '@fontsource-variable/roboto-flex';
+
+body {
+  font-family: 'Roboto Flex Variable', sans-serif;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
   }
 
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
 
-  .form {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
+.form {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
 
-  input, select, button {
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
+input, select, button {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
 
-  .submit-btn {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
+.submit-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
 
-  .submit-btn:hover:not(:disabled) {
-    background-color: #c0392b;
-  }
+.submit-btn:hover:not(:disabled) {
+  background-color: #c0392b;
+}
 
-  .disabled-btn {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
+.disabled-btn {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
 
-  .result {
-    font-weight: bold;
-    margin-top: 1rem;
-  }
+.history-btn {
+  cursor: pointer;
+}
+
+.result {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+
+.refresh-btn, .back-btn button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.refresh-btn:hover, .back-btn button:hover {
+  background-color: #2980b9;
+  cursor: pointer;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #e74c3c;
+  color: white;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
